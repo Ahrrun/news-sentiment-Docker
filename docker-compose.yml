@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  spark:
+    build: ./spark
+    container_name: spark_service
+    volumes:
+      - ./spark:/opt/app
+      - ./data:/opt/app/data
+    command: python3 stream_processor.py
+    ports:
+      - "4040:4040"
+
+  fetcher:
+    build: ./fetcher
+    container_name: news_fetcher
+    environment:
+      - NEWSAPI_KEY=${NEWSAPI_KEY}
+    volumes:
+      - ./fetcher:/opt/app
+      - ./data:/opt/app/data         # ✅ Added this
+    command: python3 news_fetcher.py
+
+  dashboard:
+    build: ./dashboard
+    container_name: sentiment_dashboard
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./dashboard:/opt/app
+      - ./data:/opt/app/data         # ✅ Dashboard reads processed data
+    command: streamlit run app.py

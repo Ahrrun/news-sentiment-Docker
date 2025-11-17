@@ -1,15 +1,10 @@
-FROM apache/spark:3.5.1
-USER root
+FROM python:3.10-slim
+
 WORKDIR /opt/app
 
 COPY requirements.txt .
+RUN pip install -r requirements.txt
 
-# make pip less likely to timeout and avoid cache bloat
-ENV PIP_DEFAULT_TIMEOUT=120
-RUN python3 -m pip install --upgrade pip && \
-    python3 -m pip install --no-cache-dir -r requirements.txt
+COPY news_fetcher.py .
 
-COPY train_model.py .
-COPY stream_processor.py .
-
-CMD ["python3", "stream_processor.py"]
+CMD ["python3", "news_fetcher.py"]

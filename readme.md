@@ -1,3 +1,4 @@
+better use the zip file and unzip and do the rest !!
 news-sentiment/
 │
 ├── docker-compose.yml
@@ -35,4 +36,5 @@ news-sentiment/
 ├── docs/
 │   ├── architecture.png
 │   ├── pipeline_diagram.png
+
 
